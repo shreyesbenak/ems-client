@@ -1,62 +1,42 @@
 import React from "react";
 import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+// import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 
 import Signin from "./Page/Signin/Signin";
-import Sidebar from "./Component/Sidebar/Sidebar";
+
+
+import Home from "./Page/Layouts/Home";
+import EngineerForm from "./Page/Layouts/EngineerForm";
+import { AuthProvider } from "./Component/Utils/Auth";
+import RequireAuth from "./Component/ProtectedRoute/RequireAuth";
+import AdminDashbord from "./Page/Layouts/AdminDashbord";
 
 
 
 function App() {
   return (
-    <>
-      <Router>
-        {/* <Topbar /> */}
-        <div className="container">
-
-
-
-          <Switch>
-
-            <Route exact path="/">
-              <Signin />
-             
-            </Route>
-            <Route exact path="/home">
-            
-              <Sidebar/>
-            </Route>
-
-
-           
-
-
-
-            
+    <AuthProvider>
+    
+      <div className="">
+      <BrowserRouter>
+     
+      <Routes>
+      
+      <Route exact path="/" element={<Signin />}/>
+      <Route exact path="/home" element={<RequireAuth><Home/></RequireAuth>}/>
+      <Route exact path="/admin/viewdata" element={<RequireAuth><AdminDashbord/>  </RequireAuth>}/>
+      <Route exact path="/engineer/form" element={<RequireAuth><EngineerForm/></RequireAuth>}/>
+         
+         
           
-
-           
-
-          
-
-
-            {/* for admin Route */}
-
-{/* 
-            <Route path="/admin/dashboard">
-              <AdminSidebar />
-              <Home />
-            </Route> */}
-          
-           
-          </Switch>
-       
-
-        </div>
-      </Router>
-    </>
+      </Routes>
+     
+      </BrowserRouter>
+      </div>
+    </AuthProvider>
 
   );
 }
